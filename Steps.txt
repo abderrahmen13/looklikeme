@@ -1,0 +1,26 @@
+for mobile :
+1- upload photo from the app
+2- save datas to database and get the Id (firstname, lastname, email, country...)
+3- save photo to storage with name = Id
+4- make the check https://...../upload/<id> => return the result (Ids)
+5- get the datas of Id (firstname, lastname, email, country...)
+6- return the result (photos) to the two users emails or phone sms ..
+7- donate to see the complete details of users
+8- rate us and share :)
+
+
+for web :
+1- upload photo from the input form
+2- save datas to database and get the Id (firstname, lastname, email, country...)
+3- save photo to storage with name = Id
+4- make the check https://...../upload [POST] => return the result (Ids)
+5- get the datas of Id (firstname, lastname, email, country...)
+6- return the result (photos) to the two users emails or phone sms ..
+7- donate to see the complete details of users
+8- rate us and share :)
+
+
+
+
+to fix: 
+photo without face
