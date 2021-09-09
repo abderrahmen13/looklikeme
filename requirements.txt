@@ -3,3 +3,10 @@ dlib
 face_recognition
 numpy
 opencv-python
+-- 09/09/2021 -- https://github.com/ageitgey/face_recognition
+face_recognition_models
+Click>=6.0
+dlib>=19.3.0
+numpy
+Pillow
+scipy>=0.17.0
