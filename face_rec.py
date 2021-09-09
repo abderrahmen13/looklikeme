@@ -18,7 +18,7 @@ def get_encoded_faces():
 
     for dirpath, dnames, fnames in os.walk("./faces"):
         for f in fnames:
-            if f.endswith(".jpg") or f.endswith(".png"):
+            if f.endswith(".jpg") or f.endswith(".jpeg") or f.endswith(".png"):
                 face = fr.load_image_file("faces/" + f)
                 encoding = fr.face_encodings(face)[0]
                 encoded[f.split(".")[0]] = encoding
@@ -70,6 +70,23 @@ def makeup(img):
         d.line(face_landmarks['right_eye'] + [face_landmarks['right_eye'][0]], fill=(0, 0, 0, 110), width=6)
 
         pil_image.show()
+
+def check_if_face(im):
+    """
+    will check if there is a faces in a given image and label
+
+    :param im: str of file path
+    :return: True or False
+    """
+    try:
+        img = cv2.imread(im, 1)
+        face_locations = face_recognition.face_locations(img)
+        if len(face_locations) > 0:
+            return True
+        else:
+            return False
+    except:
+        return False
 
 
 def classify_face(im):

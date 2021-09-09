@@ -1,13 +1,14 @@
 import os
 from flask import Flask, flash, render_template, request, redirect, url_for
-from face_rec import classify_face
+from face_rec import classify_face, check_if_face
 from werkzeug.utils import secure_filename
 import urllib.request
 
-UPLOAD_FOLDER = 'C:/Users/info-03/Desktop/abderrahmen/lookLikeMe/Flask web'
-ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+UPLOAD_FOLDER = 'C:/Users/abderrahmen/Desktop/aliret/looks like me/lookLikeMe/Flask web/Nouveau dossier/looklikeme'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
@@ -34,23 +35,34 @@ def upload_file():
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
-            return redirect(request.url)
+            return redirect(url_for('index'))
         file = request.files['file']
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
             flash('No selected file')
-            return redirect(request.url)
+            return redirect(url_for('index'))
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            # save file from <input> to current folder
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            data = classify_face(filename)
-            # save file to database and get the id ...
-            # rename file to Id ...
-            # move file to faces folder
-            os.rename(app.config['UPLOAD_FOLDER']+'/'+filename, app.config['UPLOAD_FOLDER']+'/faces/'+filename)
-            return str(data).strip('[]')
+            # check if the file has a face ...
+            if check_if_face(filename) == True:
+                # save file from <input> to current folder
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                # make the test for the face recognition
+                data = classify_face(filename)
+                # save file to database and get the id ...
+
+                # rename file to Id ...
+
+                # move file to faces folder
+                os.rename(app.config['UPLOAD_FOLDER']+'/'+filename, app.config['UPLOAD_FOLDER']+'/faces/'+filename)
+                return str(data).strip('[]')
+            else:
+                flash('No faces in this file')
+                return redirect(url_for('index'))
+        else:
+            flash('You must select an image')
+            return redirect(url_for('index'))
 
 
 if __name__ == '__main__':
